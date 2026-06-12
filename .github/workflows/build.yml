@@ -31,12 +31,7 @@ jobs:
       - name: Generate localizations
         run: flutter gen-l10n
 
-      - name: Build APK Debug
-        run: flutter build apk --debug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: fridgeai-debug
-          path: build/app/outputs/flutter-apk/app-debug.apk
-          retention-days: 30
+      - name: 🔍 FORCE COMPILATION TO SHOW ERROR
+        run: |
+          flutter clean
+          flutter build apk --debug --verbose 2>&1 | grep -i "error\|exception\|failed\|fatal" -A 10 -B 10 || true
