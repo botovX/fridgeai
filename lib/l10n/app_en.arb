@@ -1,7 +1,6 @@
 {
   "@@locale": "en",
   "appTitle": "FridgeAI",
-  "analyzeButton": "Analyze my fridge",
   "analyzing": "Analyzing...",
   "galleryButton": "Gallery",
   "cameraButton": "Camera",
@@ -13,14 +12,15 @@
   "modeHealth": "Health",
   "modePremium": "Premium",
   "premiumTitle": "Go Premium",
-  "premiumDesc": "Remove ads and unlock all options.",
+  "premiumDesc": "Remove ads and unlock all options",
   "premiumCode": "Enter promo code",
   "premiumActivate": "Activate",
-  "premiumSuccess": "Premium activated! Thank you 🎉",
+  "premiumSuccess": "Premium activated! Thank you.",
   "premiumError": "Invalid code, try again.",
   "languageTitle": "Language",
-  "noImageSelected": "Please select a photo of your fridge first.",
   "settingsTitle": "Settings",
   "freeVersion": "Free version",
-  "premiumVersion": "Premium version ✨"
+  "premiumVersion": "Premium version ✨",
+  "noImageSelected": "Please select a photo of your fridge first.",
+  "analyzeButton": "Analyze Fridge"
 }
