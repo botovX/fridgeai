@@ -12,7 +12,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ─────────────────────────────────────────────
 // INSÈRE TA CLÉ API GEMINI ICI (ligne 12)
-const String _geminiApiKey = 'COLLE_TA_CLÉ_ICI';
+const String _geminiApiKey = 'AQ.Ab8RN6IZEEdi8hnMpxYTE4zEsn8VXf8pdpcpYIP-7DlWf1Jh5g';
 // ─────────────────────────────────────────────
 
 const String _premiumCode = 'FRIDGEAI2024';
