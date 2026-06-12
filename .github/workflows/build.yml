@@ -31,12 +31,10 @@ jobs:
       - name: Generate localizations
         run: flutter gen-l10n
 
-      - name: Build APK Debug
-        run: flutter build apk --debug
+      - name: Try to compile (verbose)
+        run: flutter build apk --debug --verbose || true
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: fridgeai-debug
-          path: build/app/outputs/flutter-apk/app-debug.apk
-          retention-days: 30
+      - name: Show last 100 lines of error log
+        run: |
+          echo "📄 Dernières 100 lignes du log :"
+          tail -n 100 /home/runner/.gradle/daemon/*/daemon.log || echo "Log introuvable"
