@@ -1,10 +1,5 @@
 name: IA Auto-Fix
-on:
-  workflow_dispatch:
-    inputs:
-      run_id:
-        description: 'Run ID du build échoué'
-        required: true
+on: workflow_dispatch
 jobs:
   analyze:
     runs-on: ubuntu-latest
@@ -16,7 +11,7 @@ jobs:
       - name: Download logs
         uses: actions/download-artifact@v4
         with:
-          name: build-logs-${{ github.event.inputs.run_id }}
+          name: latest-build-logs
           path: .
       - uses: actions/setup-python@v5
         with:
