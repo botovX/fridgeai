@@ -1,20 +1,30 @@
 name: IA Auto-Fix
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'Run ID du build échoué'
+        required: true
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - name: Download logs
+        uses: actions/download-artifact@v4
         with:
-          name: build-logs
+          name: build-logs-${{ github.event.inputs.run_id }}
+          path: .
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Analyze
+      - name: Install dependencies
+        run: pip install requests
+      - name: Analyze and fix
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          pip install requests
-          python .github/scripts/auto_fix.py
+        run: python .github/scripts/auto_fix.py
