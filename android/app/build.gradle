@@ -68,3 +68,4 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 // trigger build
+ERREUR_VOLONTAIRE
