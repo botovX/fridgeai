@@ -8,6 +8,8 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+      - name: Wait for artifact
+        run: sleep 15
       - name: Download logs
         uses: actions/download-artifact@v4
         with:
