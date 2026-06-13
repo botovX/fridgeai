@@ -23,9 +23,8 @@ jobs:
       - name: Check build status
         id: check
         run: |
-          if grep -q "Error\|FAILURE\|error:" build-output.log; then
+          if grep -qi "error\|failed\|failure\|could not" build-output.log; then
             echo "BUILD_FAILED=true" >> $GITHUB_OUTPUT
-            exit 0
           fi
       - name: Upload logs
         if: steps.check.outputs.BUILD_FAILED == 'true'
