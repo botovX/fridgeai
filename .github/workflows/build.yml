@@ -8,6 +8,8 @@ jobs:
     permissions:
       contents: read
       actions: write
+    outputs:
+      build_failed: ${{ steps.check.outputs.BUILD_FAILED }}
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -15,10 +17,12 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
       - name: Build APK
+        id: build_step
         run: |
           flutter pub get 2>&1 | tee build-output.log
           flutter build apk --debug 2>&1 | tee -a build-output.log
           if grep -qi "error\|failed\|failure\|could not" build-output.log; then
+            echo "BUILD_FAILED=true" >> $GITHUB_OUTPUT
             echo "::error::Build failed - errors detected in logs"
             exit 1
           fi
@@ -26,19 +30,30 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: latest-build-logs
+          name: build-logs
           path: build-output.log
           retention-days: 1
-          overwrite: true
-      - name: Trigger IA
-        if: failure()
-        uses: actions/github-script@v7
+  auto-fix:
+    needs: build
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download logs
+        uses: actions/download-artifact@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'auto-fix.yml',
-              ref: context.ref,
-            });
+          name: build-logs
+          path: .
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install requests
+      - name: Analyze and fix
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python .github/scripts/auto_fix.py
